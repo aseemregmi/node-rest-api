@@ -43,6 +43,6 @@ MongoClient.connect(
         console.log('Unable to fetch todos: ', err);
       });
 
-    client.close();
+    // client.close();
   }
 );

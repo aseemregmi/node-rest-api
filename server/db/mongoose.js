@@ -6,7 +6,7 @@ const localAddress = `mongodb://localhost:27017/TodoApp`;
 const mLabAddress = `mongodb://aseemregmi:aseemregmi123@ds143242.mlab.com:43242/todoapp`;
 
 mongoose.connect(
-  mLabAddress,
+  process.env.MONGODB_URI,
   { useNewUrlParser: true }
 );
 

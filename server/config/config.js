@@ -11,4 +11,6 @@ if (env === 'development') {
   process.env.MONGODB_URI = `${localURL}TodoAppTest`;
 } else if (env === 'production') {
   process.env.MONGODB_URI = `${mLabURL}todoapp`;
+} else {
+  process.env.MONGODB_URI = `${localURL}TodoAppTest`;
 }

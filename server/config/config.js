@@ -10,5 +10,5 @@ if (env === 'development') {
   process.env.PORT = 3000;
   process.env.MONGODB_URI = `${localURL}TodoAppTest`;
 } else if (env === 'production') {
-  process.env.MONGODB_URI = `${mLabURL}TodoApp`;
+  process.env.MONGODB_URI = `${mLabURL}todoapp`;
 }

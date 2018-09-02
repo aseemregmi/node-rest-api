@@ -5,7 +5,8 @@ let User = mongoose.model('Users', {
     type: String,
     required: true,
     minLength: 1,
-    trim: true
+    trim: true,
+    unique: true
   }
 });
 

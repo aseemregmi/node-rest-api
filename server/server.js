@@ -6,7 +6,9 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
 const _ = require('lodash');
-const bodyParser = require('body-parser');
+
+// Middlewares
+const { authenticate } = require('./middleware/authenticate');
 
 // Setup Port
 const port = process.env.PORT;
@@ -89,7 +91,6 @@ app.patch('/todos/:id', (req, res) => {
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
-  console.log(body.completed);
   if (_.isBoolean(body.completed) && body.completed) {
     body.completedAt = new Date().getTime();
   } else {
@@ -124,6 +125,10 @@ app.post('/users', (req, res) => {
       res.header('x-auth', token).send(user);
     })
     .catch(err => res.status(400).send(err));
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(port, () => {

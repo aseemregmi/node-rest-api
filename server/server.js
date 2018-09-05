@@ -6,7 +6,7 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
 const _ = require('lodash');
-// const bcrypt = require('bcryptjs');
+const cors = require('cors');
 
 // Middlewares
 const { authenticate } = require('./middleware/authenticate');
@@ -19,6 +19,9 @@ const app = express();
 
 // Setup body-parser module
 app.use(express.json());
+
+// Using CORS middleware
+app.use(cors());
 
 // Setting up routes
 // Listening for POST Method

@@ -6,7 +6,6 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
 const _ = require('lodash');
-const cors = require('cors');
 
 // Middlewares
 const { authenticate } = require('./middleware/authenticate');
@@ -21,7 +20,15 @@ const app = express();
 app.use(express.json());
 
 // Using CORS middleware
-app.use(cors());
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+  next();
+});
 
 // Setting up routes
 // Listening for POST Method

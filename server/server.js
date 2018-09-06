@@ -6,6 +6,7 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
 const _ = require('lodash');
+// const cors = require('cors');
 
 // Middlewares
 const { authenticate } = require('./middleware/authenticate');
@@ -19,14 +20,12 @@ const app = express();
 // Setup body-parser module
 app.use(express.json());
 
-// Using CORS middleware
+// CORS Middleware
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Origin', 'https://aseemregmi.github.io');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, X-auth');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
@@ -150,11 +149,15 @@ app.post('/users/login', (req, res) => {
 
   User.findByCredentials(body.email, body.password)
     .then(user => {
-      return user.generateAuthToken().then(token => {
-        res.header('x-auth', token).send(user);
-      });
+      user.generateAuthToken().then(
+        token => {
+          res.status(200).send(user);
+        },
+        () => res.status(400).send('ABC')
+      );
     })
     .catch(err => {
+      console.log(123);
       res.status(400).send();
     });
 });

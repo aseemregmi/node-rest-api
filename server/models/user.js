@@ -38,7 +38,7 @@ let UserSchema = new mongoose.Schema({
 UserSchema.methods.toJSON = function() {
   let user = this;
   let userObject = user.toObject();
-  return _.pick(userObject, ['_id', 'email']);
+  return _.pick(userObject, ['_id', 'email', 'tokens']);
 };
 
 UserSchema.methods.generateAuthToken = function() {
@@ -49,9 +49,14 @@ UserSchema.methods.generateAuthToken = function() {
     .toString();
 
   user.tokens.push({ access, token });
-  return user.save().then(() => {
-    return token;
-  });
+
+  return user.save().then(
+    () =>
+      new Promise((resolve, reject) => {
+        resolve(token);
+      }),
+    () => Promise.reject()
+  );
 };
 
 UserSchema.methods.removeToken = function(token) {

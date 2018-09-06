@@ -26,7 +26,12 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
   res.header('Access-Control-Allow-Headers', 'Content-Type, X-auth');
   res.header('Access-Control-Allow-Credentials', 'true');
-  next();
+
+  if (req.method === 'OPTIONS') {
+    res.send();
+  } else {
+    next();
+  }
 });
 
 // Setting up routes
@@ -135,7 +140,7 @@ app.post('/users', (req, res) => {
       return user.generateAuthToken();
     })
     .then(token => {
-      res.header('x-auth', token).send(user);
+      res.send(user);
     })
     .catch(err => res.status(400).send(err));
 });
@@ -157,7 +162,6 @@ app.post('/users/login', (req, res) => {
       );
     })
     .catch(err => {
-      console.log(123);
       res.status(400).send();
     });
 });
@@ -168,7 +172,7 @@ app.delete('/users/me/token', authenticate, (req, res) => {
     .then(() => {
       res.status(200).send();
     })
-    .catch(() => res.status(400).send);
+    .catch(() => res.status(400).send());
 });
 
 app.listen(port, () => {
